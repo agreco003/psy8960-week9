@@ -5,12 +5,11 @@ library(jsonlite)
 
 # Data Import and Cleaning
 rstats_list <- fromJSON("https://www.reddit.com/r/rstats/.json")
-
-rstats_original_tbl <- rstats_list
-rstats_tbl <- tibble(rstats_original_tbl) 
-
-%>%
+rstats_original_tbl <- rstats_list$data$children$data
+rstats_tbl <- tibble(rstats_original_tbl) %>%
   mutate(post = title) %>%
   mutate(upvotes = ups) %>%
   mutate(comments = num_comments) %>%
-  select()
+  select(c(post, upvotes, comments))
+
+ggplot(rstats_tbl, aes(x = upvotes, y = comments))
