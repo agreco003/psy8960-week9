@@ -1,4 +1,4 @@
-# **Script Settings and Resources**
+# Script Settings and Resources
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(tidyverse)
 library(jsonlite)
@@ -19,3 +19,8 @@ rstats_tbl <- tibble(rstats_original_tbl) %>%
 ggplot(rstats_tbl, aes(x = upvotes, y = comments)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
+
+JSONcor <- cor.test(x= rstats_tbl$upvotes, rstats_tbl$comments)
+
+# Publication
+paste("The correlation between upvotes and comments was r(", JSONcor$parameter, ") = ", str_remove(round(JSONcor$estimate, 2), "^0+"),", p = ", str_remove(round(JSONcor$p.value, 2),"^0+"),". This test was not statistically significant.", sep = "")
