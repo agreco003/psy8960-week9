@@ -7,9 +7,6 @@ library(jsonlite)
 # set_config(add_headers(`User-Agent` = "UMN Researcher greco031@umn.edu"))
 
 # Data Import and Cleaning
-#rstats_list <- fromJSON("https://www.reddit.com/r/rstats/.json")
-#rstats_original_tbl <- rstats_list$data$children$data
-
 rstats_list <- fromJSON("https://www.reddit.com/r/rstats/.json", flatten = TRUE)
 rstats_original_tbl <- tibble(rstats_list$data$children, stringsAsFactors = FALSE)
 
