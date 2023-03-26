@@ -1,6 +1,10 @@
 # Script Settings and Resources
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(tidyverse)
+# library(httr)
+# set_config(add_headers(`User-Agent` = "UMN Researcher greco031@umn.edu"))
+
+rstats_html <- slowly(read_html(https://old.reddit.com/r/rstats/), rate = 5)
 
 ggplot(rstats_tbl, aes(x = upvotes, y = comments)) +
   geom_point() +

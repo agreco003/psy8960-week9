@@ -2,6 +2,9 @@
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(tidyverse)
 library(jsonlite)
+# Needs to be done first time only
+# library(httr)
+# set_config(add_headers(`User-Agent` = "UMN Researcher greco031@umn.edu"))
 
 # Data Import and Cleaning
 #rstats_list <- fromJSON("https://www.reddit.com/r/rstats/.json")
