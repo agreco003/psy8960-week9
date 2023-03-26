@@ -8,17 +8,14 @@ library(rvest)
 rstats_html <- read_html("https://old.reddit.com/r/rstats/")
 
 post <- rstats_html %>% 
-  html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "title", " " )) and contains(concat( " ", @class, " " ), concat( " ", "may-blank", " " ))]') %>%
-  html_text()
-
-post <- rstats_html %>% 
-  html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "comments", " " ))]') %>%
+  html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "title", " " )) and contains(concat( " ", @class, " " ), concat( " ", "outbound", " " ))] | //*[(@id = "thing_t3_11zn9bu")]//*[contains(concat( " ", @class, " " ), concat( " ", "title", " " )) and contains(concat( " ", @class, " " ), concat( " ", "may-blank", " " ))] | //*[(@id = "thing_t3_11zgjfx")]//*[contains(concat( " ", @class, " " ), concat( " ", "title", " " )) and contains(concat( " ", @class, " " ), concat( " ", "may-blank", " " ))] | //*[contains(concat( " ", @class, " " ), concat( " ", "self", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "title", " " )) and contains(concat( " ", @class, " " ), concat( " ", "may-blank", " " ))]') %>%
   html_text()
 
 upvotes <- rstats_html %>% 
-  html_elements(xpath = "//div[contains(@class, 'even') or contains(@class, 'odd')]//div[@class = 'score unvoted']") %>%
+  html_elements(xpath = '//*[contains(@class, "even") or contains(@class, "odd")]//div[@class = "score unvoted"]') %>%
   html_text() %>%
-  as.numeric()
+  as.numeric() %>%
+  replace_na(replace = 0)
 
 comments <- rstats_html %>% 
   html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "comments", " " ))]') %>%
@@ -36,4 +33,4 @@ ggplot(rstats_tbl, aes(x = upvotes, y = comments)) +
 HTMLcor <- cor.test(x= rstats_tbl$upvotes, rstats_tbl$comments)
 
 #Publication
-paste("The correlation between upvotes and comments was r(", HTMLcor$parameter, ") = ", str_remove(round(HTMLcor$estimate, 2), "^0+"),", p = ", str_remove(round(HTMLcor$p.value, 2),"^0+"),". This test was not statistically significant.", sep = "")
+paste("The correlation between upvotes and comments was r(", HTMLcor$parameter, ") = ", str_remove(round(HTMLcor$estimate, digits = 2), "^0+"),", p = ", str_remove(round(HTMLcor$p.value, digits = 2),"^0+"),". This test was not statistically significant.", sep = "")
