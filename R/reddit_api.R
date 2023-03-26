@@ -11,12 +11,12 @@ library(jsonlite)
 #rstats_original_tbl <- rstats_list$data$children$data
 
 rstats_list <- fromJSON("https://www.reddit.com/r/rstats/.json", flatten = TRUE)
-rstats_original_tbl <- data_frame(rstats_list$data$children, stringsAsFactors = FALSE)
+rstats_original_tbl <- tibble(rstats_list$data$children, stringsAsFactors = FALSE)
 
 rstats_tbl <- tibble(rstats_original_tbl) %>%
-  mutate(post = data.title) %>%
-  mutate(upvotes = data.ups) %>%
-  mutate(comments = data.num_comments) %>%
+  mutate(post = data.title, 
+         upvotes = data.ups,
+         comments = data.num_comments) %>%
   select(c(post, upvotes, comments))
 
 ggplot(rstats_tbl, aes(x = upvotes, y = comments)) +
