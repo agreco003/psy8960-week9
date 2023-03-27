@@ -12,7 +12,7 @@ rstats_original_tbl <- tibble(rstats_list$data$children, stringsAsFactors = FALS
 
 rstats_tbl <- tibble(rstats_original_tbl) %>%
   mutate(post = data.title, 
-         upvotes = data.ups,
+         upvotes = data.ups, #upvotes = data.score could also work for this JSON, but ups used because of instructions
          comments = data.num_comments) %>%
   select(c(post, upvotes, comments))
 
