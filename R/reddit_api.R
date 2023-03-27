@@ -16,11 +16,14 @@ rstats_tbl <- tibble(rstats_original_tbl) %>%
          comments = data.num_comments) %>%
   select(c(post, upvotes, comments))
 
+# Visualization
 ggplot(rstats_tbl, aes(x = upvotes, y = comments)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 
+# Analyses
 JSONcor <- cor.test(x = rstats_tbl$upvotes, y = rstats_tbl$comments)
+JSONcor
 
 # Publication
 paste("The correlation between upvotes and comments was r(", JSONcor$parameter, ") = ", str_remove(round(JSONcor$estimate, digits = 2), "^0+"),", p = ", str_remove(round(JSONcor$p.value, digits = 2),"^0+"),". This test was not statistically significant.", sep = "")
