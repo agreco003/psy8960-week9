@@ -8,16 +8,18 @@ library(rvest)
 rstats_html <- read_html("https://old.reddit.com/r/rstats/")
 
 post <- rstats_html %>%
-  html_elements(css = '.title.outbound , .self .title.may-blank') %>%
+  html_elements(css = '.odd .title.may-blank, .even .title.may-blank' ) %>%
   html_text()
 
 upvotes <- rstats_html %>% 
-  html_elements(css = '.score.unvoted') %>%
+  html_elements(css = '.odd .score.unvoted, .even .score.unvoted') %>%
   html_text() %>%
-  as.numeric()
+  na_if("•") %>%
+  as.numeric() %>%
+  replace_na(replace = 0)
 
 comments <- rstats_html %>% 
-  html_elements(css = '.first') %>%
+  html_elements(css = '.odd .first, .even .first') %>%
   html_text() %>% 
   str_remove(".?comment?.?") %>%
   as.numeric() %>%
