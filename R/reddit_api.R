@@ -8,9 +8,9 @@ library(jsonlite)
 
 # Data Import and Cleaning
 rstats_list <- fromJSON("https://www.reddit.com/r/rstats/.json", flatten = TRUE)
-rstats_original_tbl <- tibble(rstats_list$data$children, stringsAsFactors = FALSE)
 
-rstats_tbl <- tibble(rstats_original_tbl) %>%
+
+rstats_tbl <- tibble(rstats_list$data$children, stringsAsFactors = FALSE) %>%
   mutate(post = data.title, 
          upvotes = data.ups, #upvotes = data.score could also work for this JSON, but ups used because of instructions
          comments = data.num_comments) %>%
